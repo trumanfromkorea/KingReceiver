@@ -11,6 +11,15 @@
 		0D6EC761294E016B00ABF1B7 /* KingReceiver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D6EC756294E016A00ABF1B7 /* KingReceiver.framework */; };
 		0D6EC766294E016B00ABF1B7 /* KingReceiverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6EC765294E016B00ABF1B7 /* KingReceiverTests.swift */; };
 		0D6EC767294E016B00ABF1B7 /* KingReceiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D6EC759294E016A00ABF1B7 /* KingReceiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0DCCA5362950803800FF5529 /* KingReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA5352950803800FF5529 /* KingReceiver.swift */; };
+		0DCCA5382950808300FF5529 /* KingRecevier+UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA5372950808300FF5529 /* KingRecevier+UIImageView.swift */; };
+		0DCCA53A2950808F00FF5529 /* NSCache+subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA5392950808F00FF5529 /* NSCache+subscript.swift */; };
+		0DCCA53C2950809800FF5529 /* UIImage+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA53B2950809800FF5529 /* UIImage+resize.swift */; };
+		0DCCA53E295080F900FF5529 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA53D295080F900FF5529 /* ImageCache.swift */; };
+		0DCCA5402950810000FF5529 /* MemoryImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA53F2950810000FF5529 /* MemoryImageCache.swift */; };
+		0DCCA5422950810500FF5529 /* NoneImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA5412950810500FF5529 /* NoneImageCache.swift */; };
+		0DCCA5442950810A00FF5529 /* DiskImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA5432950810A00FF5529 /* DiskImageCache.swift */; };
+		0DCCA5462950811000FF5529 /* ImageCacheFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCCA5452950811000FF5529 /* ImageCacheFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +38,15 @@
 		0D6EC75A294E016A00ABF1B7 /* KingReceiver.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = KingReceiver.docc; sourceTree = "<group>"; };
 		0D6EC760294E016B00ABF1B7 /* KingReceiverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KingReceiverTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D6EC765294E016B00ABF1B7 /* KingReceiverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingReceiverTests.swift; sourceTree = "<group>"; };
+		0DCCA5352950803800FF5529 /* KingReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingReceiver.swift; sourceTree = "<group>"; };
+		0DCCA5372950808300FF5529 /* KingRecevier+UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KingRecevier+UIImageView.swift"; sourceTree = "<group>"; };
+		0DCCA5392950808F00FF5529 /* NSCache+subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCache+subscript.swift"; sourceTree = "<group>"; };
+		0DCCA53B2950809800FF5529 /* UIImage+resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resize.swift"; sourceTree = "<group>"; };
+		0DCCA53D295080F900FF5529 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		0DCCA53F2950810000FF5529 /* MemoryImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryImageCache.swift; sourceTree = "<group>"; };
+		0DCCA5412950810500FF5529 /* NoneImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoneImageCache.swift; sourceTree = "<group>"; };
+		0DCCA5432950810A00FF5529 /* DiskImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskImageCache.swift; sourceTree = "<group>"; };
+		0DCCA5452950811000FF5529 /* ImageCacheFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +89,9 @@
 		0D6EC758294E016A00ABF1B7 /* KingReceiver */ = {
 			isa = PBXGroup;
 			children = (
+				0DCCA5352950803800FF5529 /* KingReceiver.swift */,
+				0DCCA5342950802D00FF5529 /* Extensions */,
+				0DCCA5332950801E00FF5529 /* ImageCache */,
 				0D6EC759294E016A00ABF1B7 /* KingReceiver.h */,
 				0D6EC75A294E016A00ABF1B7 /* KingReceiver.docc */,
 			);
@@ -83,6 +104,28 @@
 				0D6EC765294E016B00ABF1B7 /* KingReceiverTests.swift */,
 			);
 			path = KingReceiverTests;
+			sourceTree = "<group>";
+		};
+		0DCCA5332950801E00FF5529 /* ImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				0DCCA53D295080F900FF5529 /* ImageCache.swift */,
+				0DCCA5452950811000FF5529 /* ImageCacheFactory.swift */,
+				0DCCA53F2950810000FF5529 /* MemoryImageCache.swift */,
+				0DCCA5432950810A00FF5529 /* DiskImageCache.swift */,
+				0DCCA5412950810500FF5529 /* NoneImageCache.swift */,
+			);
+			path = ImageCache;
+			sourceTree = "<group>";
+		};
+		0DCCA5342950802D00FF5529 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0DCCA5372950808300FF5529 /* KingRecevier+UIImageView.swift */,
+				0DCCA5392950808F00FF5529 /* NSCache+subscript.swift */,
+				0DCCA53B2950809800FF5529 /* UIImage+resize.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,7 +237,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DCCA53E295080F900FF5529 /* ImageCache.swift in Sources */,
+				0DCCA5402950810000FF5529 /* MemoryImageCache.swift in Sources */,
 				0D6EC75B294E016A00ABF1B7 /* KingReceiver.docc in Sources */,
+				0DCCA53A2950808F00FF5529 /* NSCache+subscript.swift in Sources */,
+				0DCCA5362950803800FF5529 /* KingReceiver.swift in Sources */,
+				0DCCA5442950810A00FF5529 /* DiskImageCache.swift in Sources */,
+				0DCCA5382950808300FF5529 /* KingRecevier+UIImageView.swift in Sources */,
+				0DCCA5422950810500FF5529 /* NoneImageCache.swift in Sources */,
+				0DCCA53C2950809800FF5529 /* UIImage+resize.swift in Sources */,
+				0DCCA5462950811000FF5529 /* ImageCacheFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +454,7 @@
 		0D6EC76E294E016B00ABF1B7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4G6ZD4247R;
@@ -418,6 +471,7 @@
 		0D6EC76F294E016B00ABF1B7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4G6ZD4247R;

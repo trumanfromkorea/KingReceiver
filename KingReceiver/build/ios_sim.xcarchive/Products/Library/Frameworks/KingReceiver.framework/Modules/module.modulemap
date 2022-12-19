@@ -1,0 +1,11 @@
+framework module KingReceiver {
+  umbrella header "KingReceiver.h"
+
+  export *
+  module * { export * }
+}
+
+module KingReceiver.Swift {
+  header "KingReceiver-Swift.h"
+  requires objc
+}

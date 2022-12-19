@@ -1,0 +1,41 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)
+// swift-module-flags: -target arm64-apple-ios16.2-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name KingReceiver
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import Foundation
+@_exported import KingReceiver
+import Swift
+import UIKit.UIImage
+import UIKit
+import _Concurrency
+import _StringProcessing
+public protocol ImageCache {
+  func fetch(with url: Foundation.URL, completion: @escaping (Foundation.Data?) -> Swift.Void)
+}
+@_hasMissingDesignatedInitializers final public class MemoryImageCache : KingReceiver.ImageCache {
+  final public func fetch(with url: Foundation.URL, completion: @escaping (Foundation.Data?) -> Swift.Void)
+  @objc deinit
+}
+public struct KingReceiverWrapper<Base> {
+  public let base: Base
+}
+public protocol KingReceiverCompatible : AnyObject {
+}
+extension KingReceiver.KingReceiverCompatible {
+  public var kr: KingReceiver.KingReceiverWrapper<Self> {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class DiskImageCache : KingReceiver.ImageCache {
+  final public func fetch(with url: Foundation.URL, completion: @escaping (Foundation.Data?) -> Swift.Void)
+  @objc deinit
+}
+extension UIKit.UIImageView : KingReceiver.KingReceiverCompatible {
+}
+@_hasMissingDesignatedInitializers final public class NoneImageCache : KingReceiver.ImageCache {
+  final public func fetch(with url: Foundation.URL, completion: @escaping (Foundation.Data?) -> Swift.Void)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class ImageCacheFactory {
+  @objc deinit
+}
