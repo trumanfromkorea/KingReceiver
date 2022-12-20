@@ -17,7 +17,7 @@ public final class DiskImageCache: ImageCache {
                 completion(nil)
                 return
             }
-            
+
             if let data = try? Data(contentsOf: path) {
                 completion(data)
                 return
@@ -36,6 +36,7 @@ public final class DiskImageCache: ImageCache {
     }
 
     /// url 그대로 파일명 삼아 캐싱
+    @available(iOS 16.0, *)
     private func path(for url: URL) -> URL {
         let fileName = url.absoluteString.replacingOccurrences(of: "/", with: "_")
         return cacheDirectory.appending(path: fileName)

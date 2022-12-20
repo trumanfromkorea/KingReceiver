@@ -11,7 +11,7 @@ extension UIImageView: KingReceiverCompatible {}
 
 public extension KingReceiverWrapper where Base: UIImageView {
     /// `UIImageView.kr.setImage` 처럼 사용 가능
-    public func setImage(
+    func setImage(
         with absoluteURL: String,
         placeholder: UIImage? = nil,
         indicator: UIActivityIndicatorView = UIActivityIndicatorView(),
@@ -46,7 +46,7 @@ public extension KingReceiverWrapper where Base: UIImageView {
         }
     }
 
-    public func setImage(
+    func setImage(
         with data: Data,
         placeholder: UIImage? = nil,
         to targetSize: CGSize,
@@ -56,10 +56,12 @@ public extension KingReceiverWrapper where Base: UIImageView {
             base.image = placeholder
             return
         }
-        
+
         base.image = image
     }
+}
 
+private extension KingReceiverWrapper where Base: UIImageView {
     /// 로딩 indicator 시작
     private func start(indicator: UIActivityIndicatorView?) {
         guard let indicator else {
