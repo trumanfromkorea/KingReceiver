@@ -30,17 +30,16 @@ public final class MemoryImageCache: ImageCache {
                     completion(nil)
                 }
             }
-            return
-        }
+        } else {
+            imageRequest(url: url) { [weak self] response in
+                switch response {
+                case let .fetchImage(image):
+                    self?.save(image: image, with: url)
+                    completion(image.imageData)
 
-        imageRequest(url: url) { [weak self] response in
-            switch response {
-            case let .fetchImage(image):
-                self?.save(image: image, with: url)
-                completion(image.imageData)
-
-            default:
-                completion(nil)
+                default:
+                    completion(nil)
+                }
             }
         }
     }
