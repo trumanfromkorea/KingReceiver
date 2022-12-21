@@ -9,9 +9,9 @@ import Foundation
 
 final class CachableImage {
     let imageData: Data
-    let etag: String
+    let etag: String?
 
-    init(imageData: Data, etag: String) {
+    init(imageData: Data, etag: String?) {
         self.imageData = imageData
         self.etag = etag
     }

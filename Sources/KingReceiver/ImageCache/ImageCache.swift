@@ -21,32 +21,36 @@ extension ImageCache {
 
     func imageRequest(url: URL, etag: String? = nil, completion: @escaping (ImageResponse) -> Void) {
         var request = URLRequest(url: url)
-
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        
         if let etag {
-            request.setValue(etag, forHTTPHeaderField: "If-None-Match")
+            request.addValue(etag, forHTTPHeaderField: "If-None-Match")
         }
 
-        URLSession.shared.dataTask(with: request) { data, response, _ in
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, _ in
             guard let httpResponse = response as? HTTPURLResponse else {
                 completion(.invalidResponse)
                 return
             }
 
             let statusCode = httpResponse.statusCode
+            let newEtag = httpResponse.value(forHTTPHeaderField: "ETag")
 
             if statusCode == 304 {
                 completion(.notModified)
                 return
             }
 
-            guard let data,
-                  let etag = httpResponse.value(forHTTPHeaderField: "ETag") else {
+            guard let data else {
                 completion(.invalidData)
                 return
             }
 
-            completion(.fetchImage(image: CachableImage(imageData: data, etag: etag)))
-        }.resume()
+            completion(.fetchImage(image: CachableImage(imageData: data, etag: newEtag)))
+        }
+
+        task.resume()
     }
 }
 
