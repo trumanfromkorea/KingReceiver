@@ -9,30 +9,43 @@ import Foundation
 
 /// 메모리 -> `NSCache` 에 캐싱
 public final class MemoryImageCache: ImageCache {
-    private let cache = NSCache<NSString, NSData>()
+    private let cache = NSCache<NSString, CachableImage>()
 
     init(cacheLimit: Int = 52428800) {
         cache.totalCostLimit = cacheLimit
     }
 
     public func fetch(with url: URL, completion: @escaping (Data?) -> Void) {
-        if let data = cache[url] {
-            completion(data as Data)
+        if let cacheData = cache[url] {
+            imageRequest(url: url, etag: cacheData.etag) { [weak self] response in
+                switch response {
+                case let .fetchImage(image):
+                    self?.save(image: image, with: url)
+                    completion(image.imageData)
+
+                case .notModified:
+                    completion(cacheData.imageData)
+
+                default:
+                    completion(nil)
+                }
+            }
             return
         }
 
-        fetchImageData(with: url) { [weak self] data in
-            guard let data else {
-                completion(nil)
-                return
-            }
+        imageRequest(url: url) { [weak self] response in
+            switch response {
+            case let .fetchImage(image):
+                self?.save(image: image, with: url)
+                completion(image.imageData)
 
-            self?.save(data: data, with: url)
-            completion(data)
+            default:
+                completion(nil)
+            }
         }
     }
 
-    private func save(data: Data, with url: URL) {
-        cache[url] = data as NSData
+    private func save(image: CachableImage, with url: URL) {
+        cache[url] = image
     }
 }

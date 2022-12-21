@@ -18,4 +18,42 @@ extension ImageCache {
             completion(data)
         }
     }
+
+    func imageRequest(url: URL, etag: String? = nil, completion: @escaping (ImageResponse) -> Void) {
+        var request = URLRequest(url: url)
+
+        if let etag {
+            request.setValue(etag, forHTTPHeaderField: "If-None-Match")
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, _ in
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.invalidResponse)
+                return
+            }
+
+            let statusCode = httpResponse.statusCode
+
+            if statusCode == 304 {
+                completion(.notModified)
+                return
+            }
+
+            guard let data,
+                  let etag = httpResponse.value(forHTTPHeaderField: "ETag") else {
+                completion(.invalidData)
+                return
+            }
+
+            completion(.fetchImage(image: CachableImage(imageData: data, etag: etag)))
+        }
+    }
+}
+
+enum ImageResponse {
+    case fetchImage(image: CachableImage)
+    case notModified
+
+    case invalidResponse
+    case invalidData
 }

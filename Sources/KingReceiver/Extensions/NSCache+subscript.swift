@@ -13,7 +13,7 @@ extension NSCache where KeyType == NSString, ObjectType == NSData {
             let key = url.absoluteString as NSString
             return object(forKey: key)
         }
-        
+
         set {
             let key = url.absoluteString as NSString
 
@@ -24,3 +24,19 @@ extension NSCache where KeyType == NSString, ObjectType == NSData {
     }
 }
 
+extension NSCache where KeyType == NSString, ObjectType == CachableImage {
+    subscript(_ url: URL) -> CachableImage? {
+        get {
+            let key = url.absoluteString as NSString
+            return object(forKey: key)
+        }
+
+        set {
+            let key = url.absoluteString as NSString
+
+            if let newValue {
+                setObject(newValue, forKey: key)
+            }
+        }
+    }
+}
