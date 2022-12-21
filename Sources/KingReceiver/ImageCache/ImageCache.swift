@@ -46,7 +46,7 @@ extension ImageCache {
             }
 
             completion(.fetchImage(image: CachableImage(imageData: data, etag: etag)))
-        }
+        }.resume()
     }
 }
 
