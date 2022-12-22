@@ -7,12 +7,7 @@
 
 import Foundation
 
-final class CachableImage {
+struct CachableImage {
     let imageData: Data
     let etag: String?
-
-    init(imageData: Data, etag: String?) {
-        self.imageData = imageData
-        self.etag = etag
-    }
 }
