@@ -19,7 +19,7 @@ public final class MemoryImageCache: ImageCache {
     public func fetch(with url: URL, completion: @escaping (Data?) -> Void) {
         if let cacheData = cache[url],
            let etag: String = userDefaults[url.absoluteString] {
-            imageRequest(url: url, etag: etag) { [weak self] response in
+            fetchImageData(url: url, etag: etag) { [weak self] response in
                 switch response {
                 case let .fetchImage(image):
                     self?.save(image: image, with: url)
@@ -33,7 +33,7 @@ public final class MemoryImageCache: ImageCache {
                 }
             }
         } else {
-            imageRequest(url: url) { [weak self] response in
+            fetchImageData(url: url) { [weak self] response in
                 switch response {
                 case let .fetchImage(image):
                     self?.save(image: image, with: url)

@@ -12,21 +12,13 @@ public protocol ImageCache {
 }
 
 extension ImageCache {
-    func fetchImageData(with url: URL, completion: @escaping (Data?) -> Void) {
-        DispatchQueue.global().async {
-            let data = try? Data(contentsOf: url)
-            completion(data)
-        }
-    }
-
-    func imageRequest(url: URL, etag: String? = nil, completion: @escaping (ImageResponse) -> Void) {
+    func fetchImageData(url: URL, etag: String? = nil, completion: @escaping (ImageResponse) -> Void) {
         var request = URLRequest(url: url)
         request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        
+
         if let etag {
             request.addValue(etag, forHTTPHeaderField: "If-None-Match")
         }
-
 
         let task = URLSession.shared.dataTask(with: request) { data, response, _ in
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -54,10 +46,3 @@ extension ImageCache {
     }
 }
 
-enum ImageResponse {
-    case fetchImage(image: CachableImage)
-    case notModified
-
-    case invalidResponse
-    case invalidData
-}

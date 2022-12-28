@@ -10,6 +10,13 @@ import Foundation
 /// 캐싱 안할경우 그냥 ..
 public final class NoneImageCache: ImageCache {
     public func fetch(with url: URL, completion: @escaping (Data?) -> Void) {
-        fetchImageData(with: url, completion: completion)
+        fetchImageData(url: url) { response in
+            switch response {
+            case let .fetchImage(image):
+                completion(image.imageData)
+            default:
+                completion(nil)
+            }
+        }
     }
 }

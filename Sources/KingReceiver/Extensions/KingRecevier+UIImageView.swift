@@ -38,7 +38,7 @@ public extension KingReceiverWrapper where Base: UIImageView {
                 }
 
                 if resizing {
-                    base.image = UIImage.resize(data: data, to: base.frame.size, scale: scale)
+                    base.image = UIImage.downsampling(data: data, to: base.frame.size, scale: scale)
                 } else {
                     base.image = UIImage(data: data)
                 }
@@ -52,7 +52,7 @@ public extension KingReceiverWrapper where Base: UIImageView {
         to targetSize: CGSize,
         scale: CGFloat = 1
     ) {
-        guard let image = UIImage.resize(data: data, to: targetSize, scale: scale) else {
+        guard let image = UIImage.downsampling(data: data, to: targetSize, scale: scale) else {
             base.image = placeholder
             return
         }

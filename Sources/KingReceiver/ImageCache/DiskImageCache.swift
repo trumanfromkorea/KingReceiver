@@ -9,7 +9,6 @@ import Foundation
 
 /// Caches 폴더에 이미지 캐싱
 public final class DiskImageCache: ImageCache {
-    private let cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
     private let userDefaults = UserDefaults.standard
 
     public func fetch(with url: URL, completion: @escaping (Data?) -> Void) {
@@ -17,7 +16,7 @@ public final class DiskImageCache: ImageCache {
 
         if let cacheData = try? Data(contentsOf: path),
            let etag: String = userDefaults[url.absoluteString] {
-            imageRequest(url: url, etag: etag) { [weak self] response in
+            fetchImageData(url: url, etag: etag) { [weak self] response in
                 switch response {
                 case let .fetchImage(image):
                     self?.save(image: image, with: url)
@@ -32,7 +31,7 @@ public final class DiskImageCache: ImageCache {
             }
             return
         } else {
-            imageRequest(url: url) { [weak self] response in
+            fetchImageData(url: url) { [weak self] response in
                 switch response {
                 case let .fetchImage(image):
                     self?.save(image: image, with: url)
@@ -48,10 +47,12 @@ public final class DiskImageCache: ImageCache {
     /// url 그대로 파일명 삼아 캐싱
     @available(iOS 16.0, *)
     private func path(for url: URL) -> URL {
+        let cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         let fileName = url.absoluteString.replacingOccurrences(of: "/", with: "_")
+
         return cacheDirectory.appending(path: fileName)
     }
-    
+
     private func save(image: CachableImage, with url: URL) {
         let path = path(for: url)
         try? image.imageData.write(to: path)

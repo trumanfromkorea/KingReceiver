@@ -8,7 +8,7 @@
 import UIKit.UIImage
 
 public extension UIImage {
-    static func resize(data: Data, to targetSize: CGSize, scale: CGFloat) -> UIImage? {
+    static func downsampling(data: Data, to targetSize: CGSize, scale: CGFloat) -> UIImage? {
         let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
         guard let imageSource = CGImageSourceCreateWithData(data as CFData, imageSourceOptions) else {
             return nil

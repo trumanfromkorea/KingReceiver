@@ -8,7 +8,7 @@
 import Foundation
 
 public final class ImageCacheFactory {
-    public enum Policy {
+    @frozen public enum Policy {
         case none
         case memory
         case disk
