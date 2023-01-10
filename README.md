@@ -36,7 +36,7 @@ class ViewController: UIViewController {
     
     private func setImageWithData() {
         imageView.kr.setImage(
-            with: iamgeData,
+            with: imageData,
             to: imageView.frame.size
         )
     }
