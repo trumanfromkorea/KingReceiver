@@ -45,7 +45,6 @@ public final class DiskImageCache: ImageCache {
     }
 
     /// url 그대로 파일명 삼아 캐싱
-    @available(iOS 14.0, *)
     private func path(for url: URL) -> URL {
         let cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         let fileName = url.absoluteString.replacingOccurrences(of: "/", with: "_")
