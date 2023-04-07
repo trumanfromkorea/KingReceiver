@@ -15,14 +15,14 @@ public extension UIImage {
         }
 
         let maxDimension = max(targetSize.width, targetSize.height) * scale
-        let resizingOptions = [
+        let resizingOptions: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
             kCGImageSourceShouldCacheImmediately: true,
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceThumbnailMaxPixelSize: maxDimension,
-        ] as CFDictionary
-        
-        guard let resizedImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, resizingOptions) else {
+        ]
+
+        guard let resizedImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, resizingOptions as CFDictionary) else {
             print("ERROR: Image Resizing Error, Check your targetSize for ImageView")
             return nil
         }
