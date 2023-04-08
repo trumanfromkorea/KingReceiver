@@ -49,7 +49,7 @@ public final class DiskImageCache: ImageCache {
         let cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         let fileName = url.absoluteString.replacingOccurrences(of: "/", with: "_")
         
-        return cacheDirectory.appending(path: fileName)
+        return cacheDirectory.addPaths([fileName]) ?? url
     }
 
     private func save(image: CachableImage, with url: URL) {
