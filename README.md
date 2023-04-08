@@ -1,4 +1,5 @@
 # KingReceiver
+- iOS 13.0 ~
 - 이미지 캐싱 라이브러리 [KingFisher](https://github.com/onevcat/Kingfisher) 를 모방해 구현한 모듈입니다.
 - 이미지 캐싱 및 다운샘플링 기능을 지원합니다.
 
