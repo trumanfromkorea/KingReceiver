@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// 디스크에 이미지를 캐싱합니다. 이미지는 Caches 폴더에 저장됩니다.
+/// Caches 폴더에 이미지 캐싱
 public final class DiskImageCache: ImageCache {
     private let userDefaults = UserDefaults.standard
 

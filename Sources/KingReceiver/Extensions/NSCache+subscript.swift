@@ -8,9 +8,6 @@
 import Foundation
 
 extension NSCache where KeyType == NSString, ObjectType == NSData {
-    /**
-     `NSCache` 사용 시 대괄호 문법을 지원합니다.
-     */
     subscript(_ url: URL) -> NSData? {
         get {
             let key = url.absoluteString as NSString
