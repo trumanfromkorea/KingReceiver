@@ -4,3 +4,5 @@ public struct KingReceiver {
     public init() {
     }
 }
+
+swift run docc process-archive transform-for-static-hosting ../KingReceiver.doccarchive --output-path ../docs --hosting-base-path base-path
