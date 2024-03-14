@@ -7,11 +7,32 @@
 
 import Foundation
 
-public protocol ImageCache {
-    func fetch(with url: URL, completion: @escaping (Data?) -> Void)
-}
+public class ImageCache: NSObject {
+    
+    func getCachedData(from url: URL) -> Data? { }
+    
+    func save(image: CachableImage, with url: URL) { }
+    
+    func fetch(with url: URL, completion: @escaping (Data?) -> Void) { 
+        
+        let cachedData = self.getCachedData(from: url)
+        let etag: String? = UserDefaults.standard[url.absoluteString]
 
-extension ImageCache {
+        self.fetchImageData(url: url, etag: etag) { [weak self] response in
+            switch response {
+            case let .fetchImage(image):
+                self?.save(image: image, with: url)
+                completion(image.imageData)
+                
+            case .notModified:
+                completion(cachedData)
+                
+            default:
+                completion(nil)
+            }
+        }
+    }
+    
     func fetchImageData(url: URL, etag: String? = nil, completion: @escaping (ImageResponse) -> Void) {
         var request = URLRequest(url: url)
         request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
@@ -44,5 +65,6 @@ extension ImageCache {
 
         task.resume()
     }
+    
+    
 }
-
