@@ -7,54 +7,36 @@
 
 import Foundation
 
-/// Caches 폴더에 이미지 캐싱
+/// 디스크를 이용하는 이미지 캐시
+///
 public final class DiskImageCache: ImageCache {
-    private let userDefaults = UserDefaults.standard
-
-    public func fetch(with url: URL, completion: @escaping (Data?) -> Void) {
-        let path = path(for: url)
-
-        if let cacheData = try? Data(contentsOf: path),
-           let etag: String = userDefaults[url.absoluteString] {
-            fetchImageData(url: url, etag: etag) { [weak self] response in
-                switch response {
-                case let .fetchImage(image):
-                    self?.save(image: image, with: url)
-                    completion(image.imageData)
-
-                case .notModified:
-                    completion(cacheData as Data)
-
-                default:
-                    completion(nil)
-                }
-            }
-            return
-        } else {
-            fetchImageData(url: url) { [weak self] response in
-                switch response {
-                case let .fetchImage(image):
-                    self?.save(image: image, with: url)
-                    completion(image.imageData)
-
-                default:
-                    completion(nil)
-                }
-            }
-        }
+    
+    override func getCachedData(from url: URL) -> Data? {
+        
+        let path = self.path(for: url)
+        let cachedData = try? Data(contentsOf: path)
+        
+        return cachedData
+    }
+    
+    override func save(image: CachableImage, with url: URL) {
+        
+        let path = self.path(for: url)
+        try? image.imageData.write(to: path)
+        
+        UserDefaults.standard[url.absoluteString] = image.etag
     }
 
-    /// url 그대로 파일명 삼아 캐싱
+    /// 이미지 url 을 이용해 캐시 데이터를 저장할 경로를 가져온다.
+    ///
     private func path(for url: URL) -> URL {
+        
+        // Caches 폴더에 이미지 저장.
+        //
         let cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         let fileName = url.absoluteString.replacingOccurrences(of: "/", with: "_")
         
         return cacheDirectory.addPaths([fileName]) ?? url
     }
 
-    private func save(image: CachableImage, with url: URL) {
-        let path = path(for: url)
-        try? image.imageData.write(to: path)
-        userDefaults[url.absoluteString] = image.etag
-    }
 }
