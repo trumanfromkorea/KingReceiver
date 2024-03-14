@@ -7,7 +7,8 @@
 
 import Foundation
 
-/// Caches 폴더에 이미지 캐싱
+/// 디스크를 이용하는 이미지 캐시
+///
 public final class DiskImageCache: ImageCache {
     
     override func getCachedData(from url: URL) -> Data? {
@@ -26,9 +27,12 @@ public final class DiskImageCache: ImageCache {
         UserDefaults.standard[url.absoluteString] = image.etag
     }
 
-    /// url 그대로 파일명 삼아 캐싱
+    /// 이미지 url 을 이용해 캐시 데이터를 저장할 경로를 가져온다.
+    ///
     private func path(for url: URL) -> URL {
         
+        // Caches 폴더에 이미지 저장.
+        //
         let cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         let fileName = url.absoluteString.replacingOccurrences(of: "/", with: "_")
         
