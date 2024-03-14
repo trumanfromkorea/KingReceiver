@@ -7,47 +7,31 @@
 
 import Foundation
 
-/// 메모리 -> `NSCache` 에 캐싱
+/// 앱이 실행되는 동안에만 메모리에 이미지를 캐시한다.
+///
 public final class MemoryImageCache: ImageCache {
+    
+    /// 메모리 캐시  (NSCache 사용)
+    ///
     private let cache = NSCache<NSString, NSData>()
-    private let userDefaults = UserDefaults.standard
 
+    
+    /// Initializer.
+    ///
+    /// - Parameter cacheLimit: NSCache 의 최대 캐시 저장 용량
     init(cacheLimit: Int = 52428800) {
-        cache.totalCostLimit = cacheLimit
+        
+        self.cache.totalCostLimit = cacheLimit
+    }
+    
+    override func getCachedData(from url: URL) -> Data? {
+        
+        return self.cache[url] as? Data
     }
 
-    public func fetch(with url: URL, completion: @escaping (Data?) -> Void) {
-        if let cacheData = cache[url],
-           let etag: String = userDefaults[url.absoluteString] {
-            fetchImageData(url: url, etag: etag) { [weak self] response in
-                switch response {
-                case let .fetchImage(image):
-                    self?.save(image: image, with: url)
-                    completion(image.imageData)
-
-                case .notModified:
-                    completion(cacheData as Data)
-
-                default:
-                    completion(nil)
-                }
-            }
-        } else {
-            fetchImageData(url: url) { [weak self] response in
-                switch response {
-                case let .fetchImage(image):
-                    self?.save(image: image, with: url)
-                    completion(image.imageData)
-
-                default:
-                    completion(nil)
-                }
-            }
-        }
-    }
-
-    private func save(image: CachableImage, with url: URL) {
-        cache[url] = image.imageData as NSData
-        userDefaults[url.absoluteString] = image.etag
+    override func save(image: CachableImage, with url: URL) {
+        
+        self.cache[url] = image.imageData as NSData
+        UserDefaults.standard[url.absoluteString] = image.etag
     }
 }

@@ -7,16 +7,23 @@
 
 import Foundation
 
-/// 캐싱 안할경우 그냥 ..
+/// 캐시를 사용하고 싶지 않은 경우 무조건 새로운 요청을 보낸다.
+///
 public final class NoneImageCache: ImageCache {
-    public func fetch(with url: URL, completion: @escaping (Data?) -> Void) {
-        fetchImageData(url: url) { response in
+    
+    override func fetch(with url: URL, completion: @escaping (Data?) -> Void) {
+        
+        self.fetchImageData(url: url) { response in
+            
             switch response {
+                
             case let .fetchImage(image):
                 completion(image.imageData)
+                
             default:
                 completion(nil)
             }
         }
     }
 }
+
