@@ -9,5 +9,5 @@ import Foundation
 
 struct CachableImage {
     let imageData: Data
-    let etag: String?
+    let metaData: ImageMetaData
 }
