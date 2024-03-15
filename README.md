@@ -7,7 +7,7 @@
 - SPM (Swift Package Manager)
 
 ```
-https://github.com/hongpower/KingReceiver.git
+https://github.com/trumanfromkorea/KingReceiver.git
 ```
 
 ## 사용법
