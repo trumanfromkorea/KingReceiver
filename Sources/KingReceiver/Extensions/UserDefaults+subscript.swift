@@ -8,7 +8,7 @@
 import Foundation
 
 extension UserDefaults {
-    subscript<T>(key: String) -> T? {
+    subscript<T: UserDefaultsCompatible>(key: String) -> T? {
         get { value(forKey: key) as? T }
         set { set(newValue, forKey: key) }
     }
