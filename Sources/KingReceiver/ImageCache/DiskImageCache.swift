@@ -22,6 +22,7 @@ public final class DiskImageCache<T: CachableData>: ImageCache {
     
     init(cacheLimit: Int = 100 * 1024 * 1024) {
         self.cacheLimit = cacheLimit
+        try? prepareCacheFolder()
     }
     
     public func getCachedData(from key: String) -> T? {
@@ -30,6 +31,7 @@ public final class DiskImageCache<T: CachableData>: ImageCache {
         
         do {
             let decodedData: T = try T.fromData(cachedData)
+            updateLastAccessDate(for: key)
             return decodedData
         } catch {
             print(error)
@@ -70,16 +72,42 @@ public final class DiskImageCache<T: CachableData>: ImageCache {
         let encodedData = try image.toData()
         try encodedData.write(to: path)
         UserDefaults.standard[key] = metaData(for: key, data: image).toData()
+        removeLeastRecentlyUsed()
     }
 }
-//
-///// Disk Purge Functions
-//        
-//        let path = self.path(for: url)
-//        try? image.imageData.write(to: path)
-//        
-//        UserDefaults.standard[url.absoluteString] = image.etag
-//    }
+
+/// Disk Purge Functions
+extension DiskImageCache {
+    
+    /// 가장 늦게 사용된 이미지들을 cacheLimit이하로 도달할 때까지 삭제
+    /// 현재 cache사용용량이 cacheLimit보다 작은지 확인하는 기능도 포함
+    func removeLeastRecentlyUsed() {
+        if totalSize() <= cacheLimit { return }
+        
+        var sortedMetaData = allMetaData().sorted(by: { $0.lastAccessDate > $1.lastAccessDate })
+        var currentCost = totalSize()
+        
+        while currentCost > cacheLimit, let metaData = sortedMetaData.popLast() {
+            currentCost -= metaData.cost
+            remove(for: metaData.key)
+        }
+    }
+    
+    /// key에 해당하는 캐싱된 이미지를 제거
+    /// 실제 이미지와 메타데이터 모두 제거
+    func remove(for key: String) {
+        guard let path = self.path(for: key) else { return }
+        try? fileManager.removeItem(at: path)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+    
+    /// 캐싱된 모든 이미지를 제거
+    func removeAll() throws {
+        for key in fileManager.allFileNames(at: defaultCacheDirectory) {
+            remove(for: key)
+        }
+    }
+}
 
 /// Helper Functions
 extension DiskImageCache {
@@ -104,6 +132,18 @@ extension DiskImageCache {
     }
     
     /// 이미지의 가장 최근 접속 날짜를 메타데이터에 업데이트한 후 저장
+    private func updateLastAccessDate(for key: String) {
+        if let encodedMetaData: Data = UserDefaults.standard[key],
+           let metaData = ImageMetaData.fromData(encodedMetaData) {
+            
+            let newMetaData = ImageMetaData(
+                key: key,
+                cost: metaData.cost,
+                lastAccessDate: Date()
+            )
+            UserDefaults.standard[key] = newMetaData.toData()
+        }
+    }
     
     /// 캐싱할 폴더가 있는지 확인하고 없으면 폴더 생성
     private func prepareCacheFolder() throws {
