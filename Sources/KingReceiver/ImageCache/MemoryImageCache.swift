@@ -9,7 +9,7 @@ import Foundation
 
 /// 앱이 실행되는 동안에만 메모리에 이미지를 캐시한다.
 ///
-public final class MemoryImageCache: ImageCache {
+public final class MemoryImageCache<T: CachableData>: ImageCache {
     
     /// 메모리 캐시  (NSCache 사용)
     ///
@@ -24,14 +24,20 @@ public final class MemoryImageCache: ImageCache {
         self.cache.totalCostLimit = cacheLimit
     }
     
-    override func getCachedData(from url: URL) -> Data? {
-        
-        return self.cache[url] as? Data
+    public func getCachedData(from key: String) -> T? {
+        guard let data = cache.object(forKey: key as NSString) as? Data else { return nil }
+        return try? T.fromData(data)
     }
-
-    override func save(image: CachableImage, with url: URL) {
+    
+    public func save(image: T, with key: String) {
+        guard let data = try? image.toData() else { return }
         
-        self.cache[url] = image.imageData as NSData
-        UserDefaults.standard[url.absoluteString] = image.etag
+        self.cache.setObject(
+            data as NSData,
+            forKey: key as NSString
+        )
+        
+        UserDefaults.standard[key] = metaData(for: key, data: image).toData()
     }
 }
+

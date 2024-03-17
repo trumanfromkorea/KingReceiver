@@ -17,15 +17,34 @@ public final class ImageCacheFactory {
     private static let shared = ImageCacheFactory()
     private init() {}
 
-    private lazy var noneImageCache = NoneImageCache()
-    private lazy var memoryImageCache = MemoryImageCache()
-    private lazy var diskImageCache = DiskImageCache()
+    private lazy var memoryImageCache = MemoryImageCache<CachableImage>()
+    private lazy var diskImageCache = DiskImageCache<CachableImage>()
 
-    static func make(with policy: Policy) -> ImageCache {
+    static func make(with policy: Policy) -> AnyImageCache? {
         switch policy {
-        case .none: return Self.shared.noneImageCache
-        case .memory: return Self.shared.memoryImageCache
-        case .disk: return Self.shared.diskImageCache
+        case .none: return nil
+        case .memory: return AnyImageCache(Self.shared.memoryImageCache)
+        case .disk: return AnyImageCache(Self.shared.diskImageCache)
         }
+    }
+}
+
+struct AnyImageCache: ImageCache {
+    typealias T = CachableImage
+    
+    private let getCachedDataClosure: (String) -> CachableImage?
+    private let saveClosure: (CachableImage, String) throws -> Void
+    
+    init<C: ImageCache>(_ cache: C) where C.T == CachableImage {
+        getCachedDataClosure = cache.getCachedData
+        saveClosure = cache.save
+    }
+    
+    func getCachedData(from key: String) -> CachableImage? {
+        return getCachedDataClosure(key)
+    }
+    
+    func save(image: CachableImage, with key: String) throws {
+        try saveClosure(image, key)
     }
 }

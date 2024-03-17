@@ -25,10 +25,8 @@ public extension KingReceiverWrapper where Base: UIImageView {
         }
 
         start(indicator: indicator)
-
-        let imageCache = ImageCacheFactory.make(with: cachePolicy)
-
-        imageCache.fetch(with: url) { data in
+        
+        ImageCacheService.shared.fetch(with: url, cachePolicy: cachePolicy) { data in
             DispatchQueue.main.async {
                 defer { self.stop(indicator: indicator) }
 
