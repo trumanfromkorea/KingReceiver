@@ -26,10 +26,10 @@ public final class DiskImageCache<T: CachableData>: ImageCache {
     }
     
     public func getCachedData(from key: String) -> T? {
-        guard let path = self.path(for: key),
-              let cachedData: Data = (try? Data(contentsOf: path)) else { return nil }
+        guard let path = self.path(for: key) else { return nil }
         
         do {
+            let cachedData = try Data(contentsOf: path)
             let decodedData: T = try T.fromData(cachedData)
             updateLastAccessDate(for: key)
             return decodedData
