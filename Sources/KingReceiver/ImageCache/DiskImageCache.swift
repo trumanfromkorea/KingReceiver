@@ -72,7 +72,7 @@ public final class DiskImageCache<T: CachableData>: ImageCache {
         let encodedData = try image.toData()
         try encodedData.write(to: path)
         UserDefaults.standard[key] = metaData(for: key, data: image).toData()
-        removeLeastRecentlyUsed()
+        removeLeastRecentlyUsedIfNeeded()
     }
 }
 
@@ -81,7 +81,7 @@ extension DiskImageCache {
     
     /// 가장 늦게 사용된 이미지들을 cacheLimit이하로 도달할 때까지 삭제
     /// 현재 cache사용용량이 cacheLimit보다 작은지 확인하는 기능도 포함
-    func removeLeastRecentlyUsed() {
+    func removeLeastRecentlyUsedIfNeeded() {
         if totalSize() <= cacheLimit { return }
         
         var sortedMetaData = allMetaData().sorted(by: { $0.lastAccessDate > $1.lastAccessDate })

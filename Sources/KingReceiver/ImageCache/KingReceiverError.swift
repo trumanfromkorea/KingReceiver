@@ -8,10 +8,10 @@
 import Foundation
 
 enum KingReceiverError: Error {
-    case cacheError(reason: KingReceiverErrorReason)
+    case cacheError(reason: CacheErrorReason)
 }
 
-enum KingReceiverErrorReason {
+enum CacheErrorReason {
     case failedCreatingCacheFile(at: URL)
     case failedCreatingCacheFolder(at: URL)
 }
