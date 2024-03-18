@@ -13,6 +13,7 @@ import Foundation
 
 public final class ImageCacheService {
     public static let shared = ImageCacheService()
+    private let ioQueue = DispatchQueue(label: "KingReceiver.ImageCacheService.ioQueue")
     
     private init() {}
     
@@ -23,19 +24,22 @@ public final class ImageCacheService {
         // cached data 가 있더라도 url 에 대한 이미지 수정 여부를 고려하여 etag 사용하여 무조건 요청을 한다.
         let cache = ImageCacheFactory.make(with: cachePolicy)
         let cachedData: CachableImage? = cache?.getCachedData(from: url.absoluteString)
-
-        self.fetchImageData(url: url, etag: cachedData?.etag) { response in
+        
+        self.fetchImageData(url: url, etag: cachedData?.etag) { [weak self ] response in
             
             switch response {
                 
             // 이미지 response 도착한 경우.
             //
             case let .fetchImage(image):
-                do {
-                    try cache?.save(image: image, with: url.absoluteString)
-                } catch {
-                    print(error)
+                self?.ioQueue.async {
+                    do {
+                        try cache?.save(image: image, with: url.absoluteString)
+                    } catch {
+                        print(error)
+                    }
                 }
+                
                 completion(image.imageData)
             
             // url 에 대한 이미지 변화 없는 경우 캐시 데이터 전달.
@@ -48,6 +52,7 @@ public final class ImageCacheService {
             }
         }
     }
+                            
     
     /// URL 에 대해 직접 이미지를 요청한다.
     ///
@@ -97,5 +102,6 @@ public final class ImageCacheService {
     
         task.resume()
     }
+                            
 }
 

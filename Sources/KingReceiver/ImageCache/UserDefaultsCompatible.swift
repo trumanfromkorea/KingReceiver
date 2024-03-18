@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// UserDefaults에 저장될 수 있는 타입
+
 protocol UserDefaultsCompatible {}
 
 extension NSData: UserDefaultsCompatible {}
