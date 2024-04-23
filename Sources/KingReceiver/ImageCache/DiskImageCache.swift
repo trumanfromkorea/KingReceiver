@@ -9,7 +9,7 @@ import Foundation
 
 /// 디스크를 이용하는 이미지 캐시
 ///
-public final class DiskImageCache<T: CachableData>: ImageCache {
+public final class DiskImageCache<T: Cacheable>: ImageCache {
     
     private let fileManager = FileManager.default
     private(set) var cacheLimit: Int

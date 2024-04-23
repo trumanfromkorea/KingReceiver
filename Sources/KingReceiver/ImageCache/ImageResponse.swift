@@ -8,7 +8,7 @@
 import Foundation
 
 enum ImageResponse {
-    case fetchImage(image: CachableImage)
+    case fetchImage(image: CacheableImage)
     case notModified
     case invalidResponse
     case invalidData

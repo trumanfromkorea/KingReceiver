@@ -22,7 +22,7 @@ public final class ImageCacheService {
         
         // cached data 가 있더라도 url 에 대한 이미지 수정 여부를 고려하여 etag 사용하여 무조건 요청을 한다.
         let cache = ImageCacheFactory.make(with: cachePolicy)
-        let cachedData: CachableImage? = cache?.getCachedData(from: url.absoluteString)
+        let cachedData: CacheableImage? = cache?.getCachedData(from: url.absoluteString)
 
         self.fetchImageData(url: url, etag: cachedData?.etag) { response in
             
