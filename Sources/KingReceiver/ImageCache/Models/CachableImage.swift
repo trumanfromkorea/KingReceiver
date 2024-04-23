@@ -1,5 +1,5 @@
 //
-//  CachableImage.swift
+//  CacheableImage.swift
 //
 //
 //  Created by 장재훈 on 2022/12/21.
@@ -8,12 +8,12 @@
 import Foundation
 
 /// ImageCacheService가 사용하는 객체로, CacheService에 저장되는 객체
-public struct CachableImage: CachableData, Codable {
+public struct CacheableImage: CacheableData, Codable {
     public func toData() throws -> Data {
         return try JSONEncoder().encode(self)
     }
     
-    public static func fromData(_ data: Data) throws -> CachableImage {
+    public static func fromData(_ data: Data) throws -> CacheableImage {
         return try JSONDecoder().decode(Self.self, from: data)
     }
     

@@ -14,17 +14,17 @@ import XCTest
 ///
 final class EncodingDecodingTestCase: XCTestCase {
     var dataDiskCache: DiskImageCache<Data>!
-    var cachableImageDiskCache: DiskImageCache<CachableImage>!
+    var cacheableImageDiskCache: DiskImageCache<CacheableImage>!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         self.dataDiskCache = DiskImageCache(cacheLimit: 100)
-        self.cachableImageDiskCache = DiskImageCache(cacheLimit: 100 * 1024)
+        self.cacheableImageDiskCache = DiskImageCache(cacheLimit: 100 * 1024)
     }
     
     override func tearDownWithError() throws {
         try? dataDiskCache.removeAll()
-        try? cachableImageDiskCache.removeAll()
+        try? cacheableImageDiskCache.removeAll()
         try super.tearDownWithError()
     }
     
@@ -36,11 +36,11 @@ final class EncodingDecodingTestCase: XCTestCase {
         XCTAssertEqual(cachedData!, data)
     }
     
-    func testCachableImageDecoding() {
+    func testCacheableImageDecoding() {
         let image = UIImage(systemName: "circle")!
-        let data = CachableImage(imageData: image.pngData()!, etag: "abc")
-        try? cachableImageDiskCache.save(image: data, with: "key")
-        let cachedData = cachableImageDiskCache.getCachedData(from: "key")
+        let data = CacheableImage(imageData: image.pngData()!, etag: "abc")
+        try? cacheableImageDiskCache.save(image: data, with: "key")
+        let cachedData = cacheableImageDiskCache.getCachedData(from: "key")
         XCTAssertNotNil(cachedData)
         XCTAssertEqual(cachedData!.etag, data.etag)
         XCTAssertTrue(cachedData!.imageData.elementsEqual(data.imageData))

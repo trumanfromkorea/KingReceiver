@@ -13,7 +13,7 @@ enum TestError: Error {
     case encodingError
 }
 
-extension String: CachableData {
+extension String: CacheableData {
     public func toData() throws -> Data {
         guard let data = self.data(using: .utf8) else { throw TestError.encodingError }
         return data
