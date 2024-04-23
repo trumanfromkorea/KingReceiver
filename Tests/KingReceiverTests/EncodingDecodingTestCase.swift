@@ -8,7 +8,7 @@
 @testable import KingReceiver
 import XCTest
 
-/// DataTransformable을 따르는 객체는
+/// CachableData를 따르는 객체는
 /// toData()와 fromData()의 구현부로 encoding/decoding을 수행하기 때문에,
 /// 위 구현부가 제대로 작성되었는지 확인하기 위한 테스트 케이스
 ///
