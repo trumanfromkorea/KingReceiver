@@ -8,7 +8,7 @@
 import Foundation
 
 /// ImageCacheService가 사용하는 객체로, CacheService에 저장되는 객체
-public struct CacheableImage: Cacheable, Codable {
+public struct CacheableImage: CacheableData, Codable {
     public func toData() throws -> Data {
         return try JSONEncoder().encode(self)
     }

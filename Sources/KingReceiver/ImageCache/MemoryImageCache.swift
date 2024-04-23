@@ -9,7 +9,7 @@ import Foundation
 
 /// 앱이 실행되는 동안에만 메모리에 이미지를 캐시한다.
 ///
-public final class MemoryImageCache<T: Cacheable>: ImageCache {
+public final class MemoryImageCache<T: CacheableData>: ImageCache {
     
     /// 메모리 캐시  (NSCache 사용)
     ///

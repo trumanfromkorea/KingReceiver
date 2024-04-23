@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol ImageCache {
-    associatedtype T: Cacheable
+    associatedtype T: CacheableData
     
     /// 주어진 url 에 대한 캐시 데이터를 반환한다.
     ///

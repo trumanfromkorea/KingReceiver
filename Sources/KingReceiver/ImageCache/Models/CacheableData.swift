@@ -9,13 +9,13 @@ import Foundation
 
 /// ImageCache에 저장하는 대상이 되는 데이터
 ///
-public protocol Cacheable: Codable {
+public protocol CacheableData: Codable {
     func toData() throws -> Data
     func size() -> Int
     static func fromData(_ data: Data) throws -> Self
 }
 
-extension Data: Cacheable {
+extension Data: CacheableData {
     public func toData() throws -> Data {
         return self
     }
